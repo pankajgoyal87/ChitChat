@@ -1,0 +1,100 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #ddd !important;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.white-background{
+	background-color:#fff;
+}
+
+.mainWindow{
+	margin-top:20px;
+}
+.mainSection{
+	background-color:#fff;
+
+}
+
+.chatList{
+
+}
+.chatList > .header{
+	font-size:14pt;
+	color:blue;
+	font-weight: bold;
+	padding:10px;
+}
+
+.chatWindow{
+	margin:10px;
+	border:1px solid #ddd;
+	border-radius: 5px;
+}
+
+.chatListItem{
+	padding:7px;
+	border:1px solid #ddd;
+	border-radius:2px;
+	margin:3px 0px 3px 0px;
+	cursor: pointer;
+}
+.chatListItem:hover{
+	background:lightblue;
+}
+.chatListItem > .chatListItemName{
+	font-weight: 400;
+	font-size:12pt;
+}
+
+.chatTextBox{
+	position: relative;
+	margin-top:10px;
+	bottom:0;
+	
+}
+
+.chatTextInput > .input-box{
+	border-right:0px solid #fff !important;
+}
+.chatTextInput > * > .send-button{
+	border-left:0px solid #fff !important;
+}
+.chatTextInput > .white-send-button{
+	background-color: #fff !important;
+}
+
+.chat{
+	padding:5px;
+	background:lightblue;
+	font-size:11pt;
+	border-radius: 3px;
+	margin:2px 0px 2px 0px;
+}
+.chat.right{
+	text-align: right;
+}
+
+/* enable absolute positioning */
+.inner-addon {
+  position: relative;
+}
+
+/* style glyph */
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* align glyph */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
