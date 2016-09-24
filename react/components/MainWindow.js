@@ -63,13 +63,9 @@ class MainWindow extends React.Component{
 
 		this.context.store.subscribe(() => {
 			var state = this.context.store.getState();
-			console.log('in main window subscribe');
-			console.log(state.chatStore);
 			for(var count=0; count<state.chatStore.groupList.length; count++){
 				if(state.chatStore.groupList[count].isCurrentGroup){
 					this.setState({showChatWindow:true});
-					console.log('ill show this window');
-					console.log(state.chatStore.groupList[count]);
 					break;
 				}
 			}
@@ -89,8 +85,6 @@ class MainWindow extends React.Component{
 				}
 			).then((response) => response.json())
 		      .then((responseJson) => {
-		      	console.log('im sending it to dispatch setGroupList');
-		      	console.log(responseJson);
 		      	this.props.dispatch(setGroupList(this.context.store.getState(),responseJson.groupList));
 		      })
 		      .catch((error) => {

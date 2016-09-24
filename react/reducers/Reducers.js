@@ -73,8 +73,6 @@ const CC_RED = (state,action) =>{
 			return newState;
 
 		case 'SET_GROUP_LIST':
-			console.log('reducer - SET_GROUP_LIST');
-			console.log(action.group.data);
 			var chatStore={};
 			if(undefined != state){ //existing data exists
 				chatStore= state.chatStore;
@@ -90,8 +88,6 @@ const CC_RED = (state,action) =>{
 			}
 			var newState = Object.assign({},state);
 			newState.chatStore = chatStore;
-			console.log('SET_GROUP_LIST');
-			console.log(newState);
 			return newState;
 			
 		case 'UPDATE_CURRENT_GROUP':
