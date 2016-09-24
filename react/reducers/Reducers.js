@@ -71,6 +71,28 @@ const CC_RED = (state,action) =>{
 			newState.chatStore = chatStore;
 
 			return newState;
+
+		case 'SET_GROUP_LIST':
+			console.log('reducer - SET_GROUP_LIST');
+			console.log(action.group.data);
+			var chatStore={};
+			if(undefined != state){ //existing data exists
+				chatStore= state.chatStore;
+				if(undefined == chatStore){ // state present but chatstore not present
+					chatStore={};
+				}
+				if(undefined == chatStore.groupList){ // chatstore present by groupList is not present in it
+					chatStore.groupList = [];
+				}
+				chatStore.groupList = action.group.data;
+			}else{ //first time data addition
+				chatStore.groupList = action.group.data;
+			}
+			var newState = Object.assign({},state);
+			newState.chatStore = chatStore;
+			console.log('SET_GROUP_LIST');
+			console.log(newState);
+			return newState;
 			
 		case 'UPDATE_CURRENT_GROUP':
 			var chatStore = {};

@@ -18,7 +18,7 @@ class Header extends React.Component{
 				      <a className="nav-link" href="#">My Groups</a>
 				    </li>
 				  </ul>
-				  <form className="form-inline pull-xs-right">
+				  <form className="form-inline pull-xs-right hide">
 				    <input className="form-control" type="text" placeholder="Search"></input>
 				    <button className="btn btn-outline-success" type="submit">Search</button>
 				  </form>

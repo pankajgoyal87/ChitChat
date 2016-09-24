@@ -28,6 +28,16 @@ export const addGroup = (state,group) =>{
 	}
 }
 
+export const setGroupList = (state,response) =>{
+	return {
+		type:'SET_GROUP_LIST',
+		group:{
+			data:response
+		},
+		state
+	}
+}
+
 export const updateCurrentGroup = (state,group) =>{
 	return {
 		type: 'UPDATE_CURRENT_GROUP',

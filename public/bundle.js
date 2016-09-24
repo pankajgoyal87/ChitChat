@@ -23392,6 +23392,32 @@
 
 				return newState;
 
+			case 'SET_GROUP_LIST':
+				console.log('reducer - SET_GROUP_LIST');
+				console.log(action.group.data);
+				var chatStore = {};
+				if (undefined != state) {
+					//existing data exists
+					chatStore = state.chatStore;
+					if (undefined == chatStore) {
+						// state present but chatstore not present
+						chatStore = {};
+					}
+					if (undefined == chatStore.groupList) {
+						// chatstore present by groupList is not present in it
+						chatStore.groupList = [];
+					}
+					chatStore.groupList = action.group.data;
+				} else {
+					//first time data addition
+					chatStore.groupList = action.group.data;
+				}
+				var newState = Object.assign({}, state);
+				newState.chatStore = chatStore;
+				console.log('SET_GROUP_LIST');
+				console.log(newState);
+				return newState;
+
 			case 'UPDATE_CURRENT_GROUP':
 				var chatStore = {};
 
@@ -23544,6 +23570,7 @@
 					}]
 				}
 			};
+			_this.getMyChatGroups = _this.getMyChatGroups.bind(_this);
 			return _this;
 		}
 
@@ -23552,15 +23579,19 @@
 			value: function componentWillMount() {
 				var _this2 = this;
 
+				//function to get initial chat group list from server
+				this.getMyChatGroups();
 				//pushing default groups to store
-				{
-					this.state.chatStore.groupList.map(function (group, i) {
-						return _this2.props.dispatch((0, _Actions.addGroup)(_this2.context.store.getState(), group));
-					});
-				};
+				/*
+	   {this.state.chatStore.groupList.map((group,i) => 
+	   	this.props.dispatch(addGroup(this.context.store.getState(),group))
+	   )};
+	   */
 
 				this.context.store.subscribe(function () {
 					var state = _this2.context.store.getState();
+					console.log('in main window subscribe');
+					console.log(state.chatStore);
 					for (var count = 0; count < state.chatStore.groupList.length; count++) {
 						if (state.chatStore.groupList[count].isCurrentGroup) {
 							_this2.setState({ showChatWindow: true });
@@ -23569,6 +23600,27 @@
 							break;
 						}
 					}
+				});
+			}
+		}, {
+			key: 'getMyChatGroups',
+			value: function getMyChatGroups() {
+				var _this3 = this;
+
+				return fetch('http://localhost:3003/chat/getMyChatGroups', {
+					method: 'GET',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					}
+				}).then(function (response) {
+					return response.json();
+				}).then(function (responseJson) {
+					console.log('im sending it to dispatch setGroupList');
+					console.log(responseJson);
+					_this3.props.dispatch((0, _Actions.setGroupList)(_this3.context.store.getState(), responseJson.groupList));
+				}).catch(function (error) {
+					console.error(error);
 				});
 			}
 		}, {
@@ -24212,6 +24264,16 @@
 		};
 	};
 
+	var setGroupList = exports.setGroupList = function setGroupList(state, response) {
+		return {
+			type: 'SET_GROUP_LIST',
+			group: {
+				data: response
+			},
+			state: state
+		};
+	};
+
 	var updateCurrentGroup = exports.updateCurrentGroup = function updateCurrentGroup(state, group) {
 		return {
 			type: 'UPDATE_CURRENT_GROUP',
@@ -24278,7 +24340,15 @@
 		_createClass(ChatListItem, [{
 			key: "render",
 			value: function render() {
-				return _react2.default.createElement("div", { className: "col-xs-12 chatListItem" }, _react2.default.createElement("div", { className: "chatListItemName",
+				var cls = "col-xs-12 chatListItem";
+				{
+					{
+						if (this.props.group.isCurrentGroup) {
+							cls = cls + " active";
+						}
+					}
+				}
+				return _react2.default.createElement("div", { className: cls }, _react2.default.createElement("div", { className: "chatListItemName",
 					onClick: this.props.chatGroupHandler.bind(this, this.props.group) }, this.props.itemName));
 			}
 		}]);
@@ -24587,10 +24657,10 @@
 									{
 										if (chat.owner == 'me') {
 											return _react2.default.createElement('div', { key: i,
-												className: 'pull-right chat right' }, chat.owner, ' : ', chat.text);
+												className: 'col-xs-7 pull-right chat right' }, chat.owner, ' : ', chat.text);
 										} else {
 											return _react2.default.createElement('div', { key: i,
-												className: ' chat' }, chat.owner, ' : ', chat.text);
+												className: 'col-xs-7 chat left' }, chat.owner, ' : ', chat.text);
 										}
 									}
 								}
@@ -24663,7 +24733,7 @@
 		_createClass(Header, [{
 			key: "render",
 			value: function render() {
-				return _react2.default.createElement("nav", { className: "navbar navbar-full navbar-light bg-faded" }, _react2.default.createElement("a", { className: "navbar-brand", href: "#" }, "ChitChat"), _react2.default.createElement("ul", { className: "nav navbar-nav" }, _react2.default.createElement("li", { className: "nav-item active" }, _react2.default.createElement("a", { className: "nav-link", href: "#" }, "Home", _react2.default.createElement("span", { className: "sr-only" }, "(current)"))), _react2.default.createElement("li", { className: "nav-item" }, _react2.default.createElement("a", { className: "nav-link", href: "#" }, "My Groups"))), _react2.default.createElement("form", { className: "form-inline pull-xs-right" }, _react2.default.createElement("input", { className: "form-control", type: "text", placeholder: "Search" }), _react2.default.createElement("button", { className: "btn btn-outline-success", type: "submit" }, "Search")));
+				return _react2.default.createElement("nav", { className: "navbar navbar-full navbar-light bg-faded" }, _react2.default.createElement("a", { className: "navbar-brand", href: "#" }, "ChitChat"), _react2.default.createElement("ul", { className: "nav navbar-nav" }, _react2.default.createElement("li", { className: "nav-item active" }, _react2.default.createElement("a", { className: "nav-link", href: "#" }, "Home", _react2.default.createElement("span", { className: "sr-only" }, "(current)"))), _react2.default.createElement("li", { className: "nav-item" }, _react2.default.createElement("a", { className: "nav-link", href: "#" }, "My Groups"))), _react2.default.createElement("form", { className: "form-inline pull-xs-right hide" }, _react2.default.createElement("input", { className: "form-control", type: "text", placeholder: "Search" }), _react2.default.createElement("button", { className: "btn btn-outline-success", type: "submit" }, "Search")));
 			}
 		}]);
 

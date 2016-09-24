@@ -7,6 +7,10 @@ a {
   color: #00B7FF;
 }
 
+.hide{
+	display: none;
+}
+
 .white-background{
 	background-color:#fff;
 }
@@ -45,6 +49,9 @@ a {
 .chatListItem:hover{
 	background:lightblue;
 }
+.chatListItem.active{
+	background:lightblue;
+}
 .chatListItem > .chatListItemName{
 	font-weight: 400;
 	font-size:12pt;
@@ -76,6 +83,9 @@ a {
 }
 .chat.right{
 	text-align: right;
+}
+.chat.left{
+	text-align: left;
 }
 
 /* enable absolute positioning */

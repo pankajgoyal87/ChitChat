@@ -58,7 +58,7 @@ class Chat extends React.Component{
 											</div>
 									} else {
 										return	<div key={i} 
-											className='col-xs-7 chat'>
+											className='col-xs-7 chat left'>
 												{chat.owner} : {chat.text}
 										</div>
 									}

@@ -8,7 +8,13 @@ class ChatListItem extends React.Component{
 
 
 	render(){
-		return <div className="col-xs-12 chatListItem">
+		var cls = "col-xs-12 chatListItem";
+		{{
+			if (this.props.group.isCurrentGroup) {
+				cls=cls + " active";
+			}
+		}}
+		return <div className={cls}>
 					<div className="chatListItemName" 
 						onClick={this.props.chatGroupHandler.bind(this,this.props.group)}>{this.props.itemName}</div>
 				</div>
