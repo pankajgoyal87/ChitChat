@@ -46,23 +46,27 @@ class Chat extends React.Component{
 			}}
 		)}; /*
 		/*End of explaining about the processing*/
-		
 		return <div className="col-xs-12">
-					<div className="col-xs-9 pull-left chat">
-						This is chat text content
-					</div>
-
-					<div className="col-xs-9 pull-right chat right">
-						This is another chat text content
-					</div>
 					{this.props.group.chat.map((chat,i) =>
 						{
 							{{ if (chat.text.trim().length > 0 ) {
-								return	<div key={i} className="col-xs-9 pull-right chat right">
-									{chat.owner} : {chat.text}
-								</div>
-								}	
-							}}
+
+								{{ if (chat.owner == 'me') {
+									return	<div key={i} 
+											className='col-xs-7 pull-right chat right'>
+												{chat.owner} : {chat.text}
+											</div>
+									} else {
+										return	<div key={i} 
+											className='col-xs-7 chat'>
+												{chat.owner} : {chat.text}
+										</div>
+									}
+										
+								
+								}}	
+							}
+						}}
 							
 						}
 					)}

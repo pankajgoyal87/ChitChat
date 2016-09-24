@@ -24578,12 +24578,22 @@
 	   	}}
 	   )}; /*
 	   /*End of explaining about the processing*/
-
-				return _react2.default.createElement('div', { className: 'col-xs-12' }, _react2.default.createElement('div', { className: 'col-xs-9 pull-left chat' }, 'This is chat text content'), _react2.default.createElement('div', { className: 'col-xs-9 pull-right chat right' }, 'This is another chat text content'), this.props.group.chat.map(function (chat, i) {
+				return _react2.default.createElement('div', { className: 'col-xs-12' }, this.props.group.chat.map(function (chat, i) {
 					{
 						{
 							if (chat.text.trim().length > 0) {
-								return _react2.default.createElement('div', { key: i, className: 'col-xs-9 pull-right chat right' }, chat.owner, ' : ', chat.text);
+
+								{
+									{
+										if (chat.owner == 'me') {
+											return _react2.default.createElement('div', { key: i,
+												className: 'pull-right chat right' }, chat.owner, ' : ', chat.text);
+										} else {
+											return _react2.default.createElement('div', { key: i,
+												className: ' chat' }, chat.owner, ' : ', chat.text);
+										}
+									}
+								}
 							}
 						}
 					}
