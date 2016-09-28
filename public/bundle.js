@@ -23393,8 +23393,6 @@
 				return newState;
 
 			case 'SET_GROUP_LIST':
-				console.log('reducer - SET_GROUP_LIST');
-				console.log(action.group.data);
 				var chatStore = {};
 				if (undefined != state) {
 					//existing data exists
@@ -23414,8 +23412,6 @@
 				}
 				var newState = Object.assign({}, state);
 				newState.chatStore = chatStore;
-				console.log('SET_GROUP_LIST');
-				console.log(newState);
 				return newState;
 
 			case 'UPDATE_CURRENT_GROUP':
@@ -23426,6 +23422,7 @@
 					if (undefined == chatStore) {
 						chatStore = {};
 					}
+
 					if (undefined != chatStore.groupList) {
 						for (var count = 0; count < chatStore.groupList.length; count++) {
 							if (action.group.data.groupId == chatStore.groupList[count].groupId) {
@@ -23533,6 +23530,7 @@
 
 			_this.state = {
 				showChatWindow: false,
+				groupWindow: {},
 				chatStore: {
 					groupList: [{
 						groupId: '1',
@@ -23587,16 +23585,11 @@
 	   	this.props.dispatch(addGroup(this.context.store.getState(),group))
 	   )};
 	   */
-
 				this.context.store.subscribe(function () {
 					var state = _this2.context.store.getState();
-					console.log('in main window subscribe');
-					console.log(state.chatStore);
 					for (var count = 0; count < state.chatStore.groupList.length; count++) {
 						if (state.chatStore.groupList[count].isCurrentGroup) {
-							_this2.setState({ showChatWindow: true });
-							console.log('ill show this window');
-							console.log(state.chatStore.groupList[count]);
+							_this2.setState({ showChatWindow: true, groupWindow: state.chatStore.groupList[count] });
 							break;
 						}
 					}
@@ -23616,8 +23609,6 @@
 				}).then(function (response) {
 					return response.json();
 				}).then(function (responseJson) {
-					console.log('im sending it to dispatch setGroupList');
-					console.log(responseJson);
 					_this3.props.dispatch((0, _Actions.setGroupList)(_this3.context.store.getState(), responseJson.groupList));
 				}).catch(function (error) {
 					console.error(error);
@@ -23628,6 +23619,7 @@
 			value: function render() {
 				var showChatWindow = false;
 				var groupWindow = {};
+				//coded just for reference. Currently not used inside.
 				{
 					{
 						if (this.state.showChatWindow) {
@@ -23637,6 +23629,7 @@
 										if (group.isCurrentGroup) {
 											showChatWindow = true;
 											groupWindow = group;
+											console.log(groupWindow);
 										}
 									}
 								});
@@ -23645,7 +23638,7 @@
 					}
 				}
 
-				return _react2.default.createElement('div', { className: 'col-xs-12 mainWindow' }, _react2.default.createElement('div', { className: 'col-xs-12 col-md-3' }, _react2.default.createElement('div', { className: 'col-xs-12 mainSection' }, _react2.default.createElement(_ChatList2.default, { chatStore: this.state.chatStore }))), _react2.default.createElement('div', { className: 'col-xs-12 col-md-9 mainSection right' }, _react2.default.createElement('div', { className: 'col-xs-12 mainSection' }, showChatWindow && _react2.default.createElement(_ChatWindow2.default, { group: groupWindow }))));
+				return _react2.default.createElement('div', { className: 'col-xs-12 mainWindow' }, _react2.default.createElement('div', { className: 'col-xs-12 col-md-3' }, _react2.default.createElement('div', { className: 'col-xs-12 mainSection' }, _react2.default.createElement(_ChatList2.default, { chatStore: this.state.chatStore }))), _react2.default.createElement('div', { className: 'col-xs-12 col-md-9 mainSection right' }, _react2.default.createElement('div', { className: 'col-xs-12 mainSection' }, this.state.showChatWindow && _react2.default.createElement(_ChatWindow2.default, { group: this.state.groupWindow }))));
 			}
 		}]);
 
@@ -24471,6 +24464,8 @@
 
 	var _Actions = __webpack_require__(206);
 
+	__webpack_require__(204);
+
 	function _interopRequireDefault(obj) {
 		return obj && obj.__esModule ? obj : { default: obj };
 	}
@@ -24507,6 +24502,7 @@
 
 			_this.handleTextChange = _this.handleTextChange.bind(_this);
 			_this.handleSendButton = _this.handleSendButton.bind(_this);
+			_this.addChatToServer = _this.addChatToServer.bind(_this);
 			return _this;
 		}
 
@@ -24522,8 +24518,35 @@
 					owner: 'me',
 					text: this.state.textVal
 				};
+				var groupId = '1';
+				this.addChatToServer(groupId, chat);
 				this.props.dispatch((0, _Actions.addSingleChatText)(this.context.store.getState(), chat));
 				this.setState({ textVal: '' });
+			}
+
+			//function to add chat to server
+
+		}, {
+			key: 'addChatToServer',
+			value: function addChatToServer(groupId, chat) {
+				return fetch('http://localhost:3003/chat/sendChat', {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						groupId: groupId,
+						chat: chat
+					}),
+					timeout: 2000
+				}).then(function (response) {
+					return response.json();
+				}).then(function (responseJson) {
+					console.log(responseJson);
+				}).catch(function (error) {
+					console.error(error);
+				});
 			}
 		}, {
 			key: 'render',

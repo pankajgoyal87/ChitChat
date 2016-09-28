@@ -15,7 +15,7 @@ var defaultState = {
 		owner:'',
 		text:''
 	}]
-};
+}
 
 var store = createStore(CC_RED,defaultState);
 

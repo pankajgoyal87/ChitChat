@@ -3,7 +3,7 @@ import 'whatwg-fetch'
 import { connect } from 'react-redux'
 import ChatList from './ChatList'
 import ChatWindow from './ChatWindow'
-import {addGroup,setGroupList} from '../actions/Actions'
+import { addGroup , setGroupList } from '../actions/Actions'
 
 class MainWindow extends React.Component{
 	constructor(props){
@@ -11,6 +11,7 @@ class MainWindow extends React.Component{
 
 		this.state={
 			showChatWindow:false,
+			groupWindow:{},
 			chatStore:{
 				groupList:[{
 					groupId:'1',
@@ -60,12 +61,11 @@ class MainWindow extends React.Component{
 			this.props.dispatch(addGroup(this.context.store.getState(),group))
 		)};
 		*/
-
 		this.context.store.subscribe(() => {
 			var state = this.context.store.getState();
 			for(var count=0; count<state.chatStore.groupList.length; count++){
 				if(state.chatStore.groupList[count].isCurrentGroup){
-					this.setState({showChatWindow:true});
+					this.setState({showChatWindow:true,groupWindow:state.chatStore.groupList[count]});
 					break;
 				}
 			}
@@ -96,11 +96,14 @@ class MainWindow extends React.Component{
 	render(){
 		var showChatWindow = false;
 		var groupWindow = {};
+		//coded just for reference. Currently not used inside.
 		{{ if (this.state.showChatWindow) {  
 				{this.state.chatStore.groupList.map((group,i) =>  
 					{{ if (group.isCurrentGroup) {
 							showChatWindow = true;
 							groupWindow = group;
+							console.log(groupWindow)
+							
 						}
 					}}
 				)}
@@ -116,8 +119,8 @@ class MainWindow extends React.Component{
 			
 			<div className="col-xs-12 col-md-9 mainSection right">
 				<div className="col-xs-12 mainSection">
-					{showChatWindow &&
-						<ChatWindow group={groupWindow}/>
+					{this.state.showChatWindow &&
+						<ChatWindow group={this.state.groupWindow}/>
 					}
 
 				</div>

@@ -98,6 +98,7 @@ const CC_RED = (state,action) =>{
 				if(undefined == chatStore){
 					chatStore = {}
 				}
+				
 				if(undefined != chatStore.groupList){
 					for(var count=0; count<chatStore.groupList.length; count++){
 						if(action.group.data.groupId == chatStore.groupList[count].groupId){
