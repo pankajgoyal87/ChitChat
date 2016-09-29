@@ -108,3 +108,9 @@ a {
 .left-addon input  { padding-left:  30px; }
 .right-addon input { padding-right: 30px; }
 
+/*Add Chat Group Button */
+.addChatGroupBtn{
+	cursor: pointer;
+}
+/*End Add Chat Group Button*/
+

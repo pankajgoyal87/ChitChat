@@ -21471,7 +21471,7 @@
 
 	var _MainWindow2 = _interopRequireDefault(_MainWindow);
 
-	var _Header = __webpack_require__(211);
+	var _Header = __webpack_require__(212);
 
 	var _Header2 = _interopRequireDefault(_Header);
 
@@ -23492,7 +23492,7 @@
 
 	var _ChatList2 = _interopRequireDefault(_ChatList);
 
-	var _ChatWindow = __webpack_require__(208);
+	var _ChatWindow = __webpack_require__(209);
 
 	var _ChatWindow2 = _interopRequireDefault(_ChatWindow);
 
@@ -24122,6 +24122,10 @@
 
 	var _ChatListItem2 = _interopRequireDefault(_ChatListItem);
 
+	var _AddChatGroupForm = __webpack_require__(208);
+
+	var _AddChatGroupForm2 = _interopRequireDefault(_AddChatGroupForm);
+
 	function _interopRequireDefault(obj) {
 		return obj && obj.__esModule ? obj : { default: obj };
 	}
@@ -24163,6 +24167,7 @@
 			};
 
 			_this.handleChatGroupClick = _this.handleChatGroupClick.bind(_this);
+			_this.handleAddChatGroupClick = _this.handleAddChatGroupClick.bind(_this);
 
 			return _this;
 		}
@@ -24193,12 +24198,19 @@
 					this.props.dispatch((0, _Actions.updateCurrentGroup)(this.context.store.getState(), group));
 				}
 			}
+
+			//handle on click of add chat group button
+
+		}, {
+			key: 'handleAddChatGroupClick',
+			value: function handleAddChatGroupClick() {}
 		}, {
 			key: 'render',
 			value: function render() {
 				var _this3 = this;
 
-				return _react2.default.createElement('div', { className: 'chatList' }, _react2.default.createElement('div', { className: 'col-xs-12 header' }, ' Chat List '), this.state.chatStore.groupList.map(function (group, i) {
+				return _react2.default.createElement('div', { className: 'chatList' }, _react2.default.createElement('div', { className: 'col-xs-12 header' }, 'Chat List', _react2.default.createElement('button', { type: 'button', className: 'btn btn-primary pull-right', 'data-toggle': 'modal',
+					'data-target': '#addChatGroupModal' }, _react2.default.createElement('i', { className: 'fa fa-plus addChatGroupBtn' }))), _react2.default.createElement(_AddChatGroupForm2.default, null), this.state.chatStore.groupList.map(function (group, i) {
 					{
 						if (group.groupName.trim().length > 0) {
 							return _react2.default.createElement(_ChatListItem2.default, { key: i,
@@ -24377,11 +24389,138 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ChatTextBox = __webpack_require__(209);
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	__webpack_require__(204);
+
+	var _reactRedux = __webpack_require__(188);
+
+	var _Actions = __webpack_require__(206);
+
+	function _interopRequireDefault(obj) {
+		return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	function _classCallCheck(instance, Constructor) {
+		if (!(instance instanceof Constructor)) {
+			throw new TypeError("Cannot call a class as a function");
+		}
+	}
+
+	function _possibleConstructorReturn(self, call) {
+		if (!self) {
+			throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+		}return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+	}
+
+	function _inherits(subClass, superClass) {
+		if (typeof superClass !== "function" && superClass !== null) {
+			throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
+		}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	}
+
+	var AddChatGroupForm = function (_React$Component) {
+		_inherits(AddChatGroupForm, _React$Component);
+
+		function AddChatGroupForm(props) {
+			_classCallCheck(this, AddChatGroupForm);
+
+			var _this = _possibleConstructorReturn(this, (AddChatGroupForm.__proto__ || Object.getPrototypeOf(AddChatGroupForm)).call(this, props));
+
+			_this.state = {
+				formData: {
+					groupName: ''
+				}
+			};
+
+			_this.addChatGroup = _this.addChatGroup.bind(_this);
+			_this.handleGroupNameInputBox = _this.handleGroupNameInputBox.bind(_this);
+			return _this;
+		}
+
+		//function to handle add button to add chat group
+
+
+		_createClass(AddChatGroupForm, [{
+			key: 'addChatGroup',
+			value: function addChatGroup() {
+				//find max group Id
+				var currentChatStore = this.context.store.getState().chatStore;
+				var groupId = currentChatStore.groupList.length + 1;
+				var group = {
+					groupId: groupId,
+					groupName: this.state.formData.groupName,
+					isCurrentGroup: false,
+					chat: []
+				};
+				//this.props.dispatch(addGroup(this.context.store.getState(),group))
+				//clearing this once group is added
+				this.setState({ formData: {
+						groupName: '' }
+				});
+				$(_reactDom2.default.findDOMNode(this)).modal('hide');
+				console.log(_reactDom2.default.findDOMNode(this));
+			}
+		}, {
+			key: 'handleGroupNameInputBox',
+			value: function handleGroupNameInputBox(e) {
+				this.setState({ formData: {
+						groupName: e.target.value }
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement('div', { className: 'modal fade', id: 'addChatGroupModal',
+					tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'myModalLabel',
+					'aria-hidden': 'true' }, _react2.default.createElement('div', { className: 'modal-dialog', role: 'document' }, _react2.default.createElement('div', { className: 'modal-content' }, _react2.default.createElement('div', { className: 'modal-header' }, _react2.default.createElement('button', { type: 'button', className: 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' }, _react2.default.createElement('span', { 'aria-hidden': 'true' }, '×')), _react2.default.createElement('h4', { className: 'modal-title' }, this.state.formData.groupName)), _react2.default.createElement('div', { className: 'modal-body' }, _react2.default.createElement('form', null, _react2.default.createElement('div', { className: 'form-group' }, _react2.default.createElement('label', null, 'Group Name'), _react2.default.createElement('input', { value: this.state.formData.groupName,
+					onChange: this.handleGroupNameInputBox,
+					className: 'form-control', id: 'groupName',
+					placeholder: 'Group Name like Friends, Family, My Batch 2016,...' })))), _react2.default.createElement('div', { className: 'modal-footer' }, _react2.default.createElement('button', { type: 'button', className: 'btn btn-secondary hide', 'data-dismiss': 'modal' }, 'Close'), _react2.default.createElement('button', { type: 'button',
+					className: 'btn btn-primary',
+					onClick: this.addChatGroup }, 'Add')))));
+			}
+		}]);
+
+		return AddChatGroupForm;
+	}(_react2.default.Component);
+
+	AddChatGroupForm.contextTypes = { store: _react2.default.PropTypes.object };
+	exports.default = AddChatGroupForm = (0, _reactRedux.connect)()(AddChatGroupForm);
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () {
+		function defineProperties(target, props) {
+			for (var i = 0; i < props.length; i++) {
+				var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+			}
+		}return function (Constructor, protoProps, staticProps) {
+			if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+		};
+	}();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _ChatTextBox = __webpack_require__(210);
 
 	var _ChatTextBox2 = _interopRequireDefault(_ChatTextBox);
 
-	var _Chat = __webpack_require__(210);
+	var _Chat = __webpack_require__(211);
 
 	var _Chat2 = _interopRequireDefault(_Chat);
 
@@ -24435,7 +24574,7 @@
 	exports.default = ChatWindow = (0, _reactRedux.connect)()(ChatWindow);
 
 /***/ },
-/* 209 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24567,7 +24706,7 @@
 	exports.default = ChatTextBox = (0, _reactRedux.connect)()(ChatTextBox);
 
 /***/ },
-/* 210 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24701,7 +24840,7 @@
 	exports.default = Chat = (0, _reactRedux.connect)()(Chat);
 
 /***/ },
-/* 211 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

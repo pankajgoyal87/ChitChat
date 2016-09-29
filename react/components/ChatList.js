@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { addGroup,updateCurrentGroup } from '../actions/Actions'
 
 import ChatListItem from './ChatListItem'
+import AddChatGroupForm from './AddChatGroupForm'
 
 class ChatList extends React.Component{
 	constructor(props){
@@ -19,6 +20,7 @@ class ChatList extends React.Component{
 		}
 
 		this.handleChatGroupClick = this.handleChatGroupClick.bind(this);
+		this.handleAddChatGroupClick = this.handleAddChatGroupClick.bind(this);
 
 	};
 
@@ -43,9 +45,23 @@ class ChatList extends React.Component{
 
 	}
 
+	//handle on click of add chat group button
+	handleAddChatGroupClick(){
+
+	}
+
 	render(){
 		return <div className="chatList">
-					<div className="col-xs-12 header"> Chat List </div>
+					<div className="col-xs-12 header"> 
+						Chat List
+						
+						<button type="button" className="btn btn-primary pull-right" data-toggle="modal" 
+							data-target="#addChatGroupModal">
+							<i className="fa fa-plus addChatGroupBtn" ></i>
+						</button>
+						
+					</div>
+					<AddChatGroupForm></AddChatGroupForm>
 					{this.state.chatStore.groupList.map((group,i) =>
 						{{
 							if(group.groupName.trim().length > 0){
