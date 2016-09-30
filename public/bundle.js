@@ -24437,6 +24437,7 @@
 
 			_this.addChatGroup = _this.addChatGroup.bind(_this);
 			_this.handleGroupNameInputBox = _this.handleGroupNameInputBox.bind(_this);
+			_this.addChatGroupToServer = _this.addChatGroupToServer.bind(_this);
 			return _this;
 		}
 
@@ -24447,21 +24448,48 @@
 			key: 'addChatGroup',
 			value: function addChatGroup() {
 				//find max group Id
-				var currentChatStore = this.context.store.getState().chatStore;
-				var groupId = currentChatStore.groupList.length + 1;
-				var group = {
-					groupId: groupId,
-					groupName: this.state.formData.groupName,
-					isCurrentGroup: false,
-					chat: []
-				};
+				/*
+	   var currentChatStore = this.context.store.getState().chatStore;
+	   var groupId = currentChatStore.groupList.length+1;
+	   var group={
+	   	groupId:groupId,
+	   	groupName: this.state.formData.groupName,
+	   	isCurrentGroup:false,
+	   	chat:[]
+	   }
+	   */
 				//this.props.dispatch(addGroup(this.context.store.getState(),group))
-				//clearing this once group is added
-				this.setState({ formData: {
-						groupName: '' }
+				this.addChatGroupToServer();
+			}
+		}, {
+			key: 'addChatGroupToServer',
+			value: function addChatGroupToServer() {
+				var _this2 = this;
+
+				return fetch('http://localhost:3003/chat/addChatGroup', {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						groupName: this.state.formData.groupName
+					}),
+					timeout: 2000
+				}).then(function (response) {
+					return response.json();
+				}).then(function (responseJson) {
+					console.log(responseJson.group);
+					_this2.props.dispatch((0, _Actions.addGroup)(_this2.context.store.getState(), responseJson.group));
+					//clearing this once group is added
+					_this2.setState({ formData: {
+							groupName: '' }
+					});
+					//hide modal
+					$(_reactDom2.default.findDOMNode(_this2)).modal('hide');
+				}).catch(function (error) {
+					console.error(error);
 				});
-				$(_reactDom2.default.findDOMNode(this)).modal('hide');
-				console.log(_reactDom2.default.findDOMNode(this));
 			}
 		}, {
 			key: 'handleGroupNameInputBox',

@@ -2,7 +2,7 @@ var datafactory = {};
 
 var chatStore = {
 				groupList:[{
-					groupId:'1',
+					groupId:1,
 					groupName:'My Family',
 					isCurrentGroup:false,
 					chat:[{
@@ -13,7 +13,7 @@ var chatStore = {
 						text:'second message of my family'
 					}]
 				},{
-					groupId:'2',
+					groupId:2,
 					groupName:'Friends',
 					isCurrentGroup:false,
 					chat:[{
@@ -24,7 +24,7 @@ var chatStore = {
 						text:'second message of friends'
 					}]
 				},{
-					groupId:'3',
+					groupId:3,
 					groupName:'Chicago Trip',
 					isCurrentGroup:false,
 					chat:[{
@@ -45,6 +45,28 @@ datafactory.addChat = function(data){
 			break;
 		}
 	}
+};
+
+function getMaxGroupId(groupList){
+	var id=0;
+	for(var count=0; count<groupList.length; count++){
+		if(groupList[count].groupId>id){
+			id = groupList[count].groupId;
+		}
+	}
+	return id+1;
+}
+
+datafactory.addChatGroup = function(data){
+	
+	var group = {
+		groupId:getMaxGroupId(chatStore.groupList),
+		groupName:data.groupName,
+		isCurrentGroup:false,
+		chat:[]
+	};
+	chatStore.groupList.push(group);
+	return group;
 };
 
 module.exports.datafactory = datafactory

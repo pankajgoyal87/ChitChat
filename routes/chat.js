@@ -15,4 +15,13 @@ router.post('/sendChat',function(req,res){
 	res.json(response);
 });
 
+router.post('/addChatGroup',function(req,res){
+	var response = {
+		status : true,
+		group:{}
+	};
+	response.group = datafactory.addChatGroup(req.body);
+	res.json(response);
+});
+
 module.exports = router

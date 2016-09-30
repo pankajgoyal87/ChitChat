@@ -16,11 +16,13 @@ class AddChatGroupForm extends React.Component{
 
 		this.addChatGroup = this.addChatGroup.bind(this)
 		this.handleGroupNameInputBox = this.handleGroupNameInputBox.bind(this)
+		this.addChatGroupToServer = this.addChatGroupToServer.bind(this)
 	}
 
 	//function to handle add button to add chat group
 	addChatGroup(){
 		//find max group Id
+		/*
 		var currentChatStore = this.context.store.getState().chatStore;
 		var groupId = currentChatStore.groupList.length+1;
 		var group={
@@ -29,14 +31,41 @@ class AddChatGroupForm extends React.Component{
 			isCurrentGroup:false,
 			chat:[]
 		}
-		this.props.dispatch(addGroup(this.context.store.getState(),group))
-		//clearing this once group is added
-		this.setState({formData:{
-						groupName:''}
-					})
-		//hide modal
-		$(ReactDOM.findDOMNode(this)).modal('hide')
+		*/
+		//this.props.dispatch(addGroup(this.context.store.getState(),group))
+		this.addChatGroupToServer()
 		
+		
+	}
+
+	addChatGroupToServer(){
+		return fetch('http://localhost:3003/chat/addChatGroup',
+				{
+					method:'POST',
+					headers: {
+					    'Accept': 'application/json',
+					    'Content-Type': 'application/json'
+					  },
+					body :JSON.stringify({
+						groupName:this.state.formData.groupName
+					  }),
+					timeout : 2000
+				}
+			).then((response) => response.json())
+		      .then((responseJson) => {
+		      	console.log(responseJson.group);
+		      	this.props.dispatch(addGroup(this.context.store.getState(),responseJson.group))
+		      	//clearing this once group is added
+				this.setState({formData:{
+								groupName:''}
+							})
+				//hide modal
+				$(ReactDOM.findDOMNode(this)).modal('hide')
+		      	
+		      })
+		      .catch((error) => {
+		      	console.error(error);
+		      });
 	}
 
 	handleGroupNameInputBox(e){
